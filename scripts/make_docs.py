@@ -10,7 +10,6 @@ import urllib.request as request
 
 
 def main():
-
     term_text = fetch_term()
     term_text = update_term_text(term_text)
 
