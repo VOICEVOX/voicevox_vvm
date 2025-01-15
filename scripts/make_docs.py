@@ -3,9 +3,9 @@ VVM関連の利用規約と、VVM内に含まれる声（キャラクター＋�
 """
 
 import json
+import re
 import zipfile
 from pathlib import Path
-import re
 from urllib import request
 
 
