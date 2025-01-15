@@ -6,7 +6,7 @@ import json
 import zipfile
 from pathlib import Path
 import re
-import urllib.request as request
+from urllib import request
 
 
 def main():
