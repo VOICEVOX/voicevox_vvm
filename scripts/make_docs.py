@@ -21,7 +21,7 @@ def main():
     update_readme(readme_path=readme_path, term_text=term_text, vvm_text=vvm_text)
     print(f"{readme_path} has been updated!")
 
-    terms_path = Path("vvms/terms.md")
+    terms_path = Path("terms.md")
     update_terms(terms_path=terms_path, term_text=term_text)
     print(f"{terms_path} has been updated!")
 
