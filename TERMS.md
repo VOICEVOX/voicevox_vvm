@@ -1,4 +1,4 @@
-# VOICEVOX VVM 利用規約
+# VOICEVOX 音声モデル 利用規約
 
 ## 許諾内容
 

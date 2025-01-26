@@ -21,7 +21,7 @@ def main():
     update_readme(readme_path=readme_path, term_text=term_text, vvm_text=vvm_text)
     print(f"{readme_path} has been updated!")
 
-    terms_path = Path("terms.md")
+    terms_path = Path("TERMS.md")
     update_terms(terms_path=terms_path, term_text=term_text)
     print(f"{terms_path} has been updated!")
 
@@ -49,7 +49,7 @@ def fetch_term():
 
 def update_term_text(text: str):
     """利用規約テキストを変更"""
-    text = "# VOICEVOX VVM 利用規約\n\n" + text
+    text = "# VOICEVOX 音声モデル 利用規約\n\n" + text
     return text
 
 
