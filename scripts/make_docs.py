@@ -7,50 +7,46 @@ import re
 import zipfile
 from pathlib import Path
 from urllib import request
+from dataclasses import dataclass
+
+
+@dataclass
+class Terms:
+    markdown: str
+    text: str
 
 
 def main():
-    term_text = fetch_term()
-    term_text = update_term_text(term_text)
+    terms = fetch_terms()
 
     vvm_files = get_vvm_files()
     assert len(vvm_files) > 0, "VVMが見つかりませんでした。"
     vvm_text = generate_vvm_text(vvm_files)
 
     readme_path = Path("README.md")
-    update_readme(readme_path=readme_path, term_text=term_text, vvm_text=vvm_text)
+    update_readme(readme_path=readme_path, terms=terms, vvm_text=vvm_text)
     print(f"{readme_path} has been updated!")
 
     terms_path = Path("TERMS.md")
-    update_terms(terms_path=terms_path, term_text=term_text)
+    update_terms(terms_path=terms_path, terms=terms)
     print(f"{terms_path} has been updated!")
 
 
-def fetch_term():
+def fetch_terms() -> Terms:
     """VOICEVOXのリポジトリから利用規約を取得"""
-
-    url = "https://raw.githubusercontent.com/VOICEVOX/voicevox_resource/refs/heads/main/core/README.md"
-    with request.urlopen(url) as response:
-        output = response.read().decode("utf-8")
-
-    trim_string = (
-        "これは VOICEVOX コアライブラリです。\n"
-        "https://github.com/VOICEVOX/voicevox_core\n\n"
-        "---\n\n"
-        "# VOICEVOX コアライブラリ利用規約\n\n"
+    base_url = (
+        "https://raw.githubusercontent.com/VOICEVOX/voicevox_resource/refs/heads/main/"
     )
-    if trim_string in output:
-        output = output.split(trim_string, 1)[1]
-    else:
-        raise ValueError("指定された文字列がREADME.mdに見つかりませんでした。")
 
-    return output
+    markdown_url = base_url + "vvm/README.md"
+    with request.urlopen(markdown_url) as response:
+        markdown = response.read().decode("utf-8")
 
+    text_url = base_url + "vvm/README.txt"
+    with request.urlopen(text_url) as response:
+        text = response.read().decode("utf-8")
 
-def update_term_text(text: str):
-    """利用規約テキストを変更"""
-    text = "# VOICEVOX 音声モデル 利用規約\n\n" + text
-    return text
+    return Terms(markdown=markdown, text=text)
 
 
 def get_vvm_files():
@@ -79,7 +75,7 @@ def generate_vvm_text(vvm_files: list[Path]):
     return output_text
 
 
-def update_readme(readme_path: Path, term_text: str, vvm_text: str):
+def update_readme(readme_path: Path, terms: Terms, vvm_text: str):
     """README.mdのテーブルの内容を置換"""
     readme_text = readme_path.read_text(encoding="utf-8")
 
@@ -94,7 +90,7 @@ def update_readme(readme_path: Path, term_text: str, vvm_text: str):
 
     readme_text = update_section(
         pattern=r"(?<=<!-- terms start -->\n\n).*?(?=\n<!-- terms end -->)",
-        target=term_text,
+        target=terms.markdown,
     )
     readme_text = update_section(
         pattern=r"(?<=<!-- vvm-table start -->\n\n).*?(?=\n<!-- vvm-table end -->)",
@@ -103,9 +99,10 @@ def update_readme(readme_path: Path, term_text: str, vvm_text: str):
     readme_path.write_text(readme_text, encoding="utf-8")
 
 
-def update_terms(terms_path: Path, term_text: str):
+def update_terms(terms_path: Path, terms: Terms):
     """利用規約テキストを更新"""
-    terms_path.write_text(term_text, encoding="utf-8")
+    terms_path.write_text(terms.text, encoding="utf-8")
 
 
-main()
+if __name__ == "__main__":
+    main()
