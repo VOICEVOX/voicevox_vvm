@@ -76,7 +76,7 @@ def generate_vvm_text(vvm_files: list[Path]):
 
 
 def update_readme(readme_path: Path, terms: Terms, vvm_text: str):
-    """README.mdのテーブルの内容を置換"""
+    """README.mdの内容を置換"""
     readme_text = readme_path.read_text(encoding="utf-8")
 
     def update_section(pattern: str, target: str) -> str:
