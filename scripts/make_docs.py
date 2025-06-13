@@ -5,9 +5,9 @@ VVM関連の利用規約と、VVM内に含まれる声（キャラクター＋�
 import json
 import re
 import zipfile
+from dataclasses import dataclass
 from pathlib import Path
 from urllib import request
-from dataclasses import dataclass
 
 
 @dataclass
@@ -49,9 +49,15 @@ def fetch_terms() -> Terms:
     return Terms(markdown=markdown, text=text)
 
 
-def get_vvm_files():
-    vvms_dir_path = Path("vvms")
-    return sorted(vvms_dir_path.glob("*.vvm"), key=lambda x: int(x.stem))
+def get_vvm_files() -> list[Path]:
+    vvms_dir_paths = Path("vvms").glob("*.vvm")
+    return sorted(
+        vvms_dir_paths,
+        key=lambda p: tuple(
+            int(chunk) if chunk.isdigit() else chunk
+            for chunk in re.split(r"(\d+)", p.stem)
+        ),
+    )
 
 
 def generate_vvm_text(vvm_files: list[Path]):

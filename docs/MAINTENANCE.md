@@ -5,11 +5,9 @@
 ## VVM 追加方法
 
 1. `vvms`ディレクトリに追加
-2. ドキュメントを更新
-
-## ドキュメント更新方法
-
-1. `scripts/make_docs.py` を実行
+2. `scripts/merge_vvm.py`を実行してファイル結合
+3. `scripts/make_docs.py` を実行してドキュメントを更新
+4. `scripts/split_vvm.py`を実行してファイル分割
 
 ## バージョニング
 

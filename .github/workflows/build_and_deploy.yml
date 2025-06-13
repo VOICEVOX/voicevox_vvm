@@ -1,0 +1,43 @@
+name: Build and Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "バージョン情報（A.BB.C / A.BB.C-preview.D）"
+        required: true
+        type: string
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Merge VVM files
+        run: |
+          cd $GITHUB_WORKSPACE
+          python scripts/merge_vvm.py
+
+      - name: Prepare VVM files for release
+        run: |
+          cd $GITHUB_WORKSPACE
+          mkdir -p release
+          cp vvms/*.vvm release/
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: true
+          tag_name: ${{ github.event.inputs.version }}
+          files: |-
+            release/*
+          target_commitish: ${{ github.sha }}
