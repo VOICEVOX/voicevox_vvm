@@ -303,3 +303,36 @@ https://litmus9.com/#/voicebank#rules
 
 利用規約の詳細は以下をご確認ください。
 https://www.virvoxproject.com/voicevoxの利用規約
+
+## ユーレイちゃん
+
+個人がユーレイちゃんの音声ライブラリを用いて生成した音声は、
+「VOICEVOX:ユーレイちゃん(CV:神崎零)」とクレジットを記載すれば、非商用（同人利用や配信による収入は OK）で利用可能です。
+その他商用利用の場合は、「ユーステラ(https://u-stella.co.jp/)」に対し事前確認を取る必要があります。
+
+利用規約の詳細は以下をご確認ください。
+https://u-stella.co.jp/voicevox-ure-chan-tucumo-terms-of-use/
+
+## 東北ずん子
+
+東北ずん子の音声ライブラリを用いて生成した音声は、
+「VOICEVOX:東北ずん子」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://zunko.jp/con_ongen_kiyaku.html
+
+## 東北きりたん
+
+東北きりたんの音声ライブラリを用いて生成した音声は、
+「VOICEVOX:東北きりたん」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://zunko.jp/con_ongen_kiyaku.html
+
+## 東北イタコ
+
+東北イタコの音声ライブラリを用いて生成した音声は、
+「VOICEVOX:東北イタコ」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://zunko.jp/con_ongen_kiyaku.html
