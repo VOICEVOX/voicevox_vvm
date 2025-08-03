@@ -1,5 +1,7 @@
 """
-VVM関連の利用規約と、VVM内に含まれる声（キャラクター＋スタイル）の一覧ドキュメントを更新する
+VVM関連の利用規約と、VVM内に含まれる声（キャラクター＋スタイル）の一覧ドキュメントを更新する。
+
+このスクリプトを実行する前に、必ず scripts/merge_vvm.py を実行してVVMファイルを結合してください。
 """
 
 import json
@@ -7,6 +9,7 @@ import re
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Literal
 from urllib import request
 
 
@@ -14,6 +17,14 @@ from urllib import request
 class Terms:
     markdown: str
     text: str
+
+
+@dataclass
+class StyleEntry:
+    vvm_file_name: str
+    speaker_name: str
+    style_name: str
+    style_id: int
 
 
 def main():
@@ -61,11 +72,10 @@ def get_vvm_files() -> list[Path]:
 
 
 def generate_vvm_text(vvm_files: list[Path]):
-    """vvmファイル内のmetas.jsonを読み込み、必要な情報をテキストに追加"""
+    """vvmファイル内のmetas.jsonを読み込み、トークとソング用の分離されたテーブルを生成"""
 
-    output_text = "# 音声モデル(.vvm)ファイルと声（キャラクター・スタイル名）とスタイル ID の対応表\n\n"
-    output_text += "| VVMファイル名 | 話者名 | スタイル名 | スタイルID |\n"
-    output_text += "|---|---|---|---|\n"
+    talk_entries: list[StyleEntry] = []
+    song_entries: list[StyleEntry] = []
 
     for vvm_file in vvm_files:
         with zipfile.ZipFile(vvm_file, "r") as zipf:
@@ -76,9 +86,45 @@ def generate_vvm_text(vvm_files: list[Path]):
                     for style in entry["styles"]:
                         style_name = style["name"]
                         style_id = style["id"]
-                        output_text += f"| {vvm_file.name} | {speaker_name} | {style_name} | {style_id} |\n"
+                        style_type = get_style_type(style)
+
+                        entry_data = StyleEntry(
+                            vvm_file_name=vvm_file.name,
+                            speaker_name=speaker_name,
+                            style_name=style_name,
+                            style_id=style_id,
+                        )
+                        if style_type == "talk":
+                            talk_entries.append(entry_data)
+                        else:
+                            song_entries.append(entry_data)
+
+    output_text = "# 音声モデル(.vvm)ファイルと声（キャラクター・スタイル名）とスタイル ID の対応表\n\n"
+
+    output_text += generate_table("トーク", talk_entries)
+    output_text += "\n"
+    output_text += generate_table("ソング", song_entries)
 
     return output_text
+
+
+def get_style_type(style: dict) -> Literal["talk", "song"]:
+    """スタイルがソングかトークかを判定"""
+    style_type = style.get("type", None)
+    if style_type in ["frame_decode", "singing_teacher"]:
+        return "song"
+    else:
+        return "talk"
+
+
+def generate_table(section_name: str, entries: list[StyleEntry]) -> str:
+    """指定されたエントリからMarkdownテーブルを生成"""
+    table_text = f"## {section_name}\n\n"
+    table_text += "| VVMファイル名 | 話者名 | スタイル名 | スタイルID |\n"
+    table_text += "|---|---|---|---|\n"
+    for entry in entries:
+        table_text += f"| {entry.vvm_file_name} | {entry.speaker_name} | {entry.style_name} | {entry.style_id} |\n"
+    return table_text
 
 
 def update_readme(readme_path: Path, terms: Terms, vvm_text: str):
