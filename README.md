@@ -1,7 +1,13 @@
 # VOICEVOX VVM とは
 
-VOICEVOX 用の 音声モデル（VVM ファイル）です。
+VOICEVOX 用の 音声モデル（VVM ファイル）です。  
 [VOICEVOX CORE](https://github.com/VOICEVOX/voicevox_core)を用いることで、プログラム上で VOICEVOX 音声を生成できます。
+
+ご利用の際は **VOICEVOX 音声モデル 利用規約** をご確認ください。
+
+## ダウンロード
+
+[Releases](https://github.com/VOICEVOX/voicevox_vvm/releases) からダウンロードできます。
 
 ---
 
