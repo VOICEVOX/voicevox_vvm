@@ -27,11 +27,12 @@ jobs:
           cd $GITHUB_WORKSPACE
           python scripts/merge_vvm.py
 
-      - name: Prepare VVM files for release
+      - name: Prepare release files
         run: |
           cd $GITHUB_WORKSPACE
           mkdir -p release
           cp vvms/*.vvm release/
+          cp TERMS.txt release/
 
       - name: Create release
         uses: softprops/action-gh-release@v2
