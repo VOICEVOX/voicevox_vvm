@@ -9,9 +9,9 @@
 3. `scripts/make_docs.py` を実行してドキュメントを更新
 4. `scripts/split_vvm.py`を実行してファイル分割
 
-## README更新方法
+## ドキュメント更新方法
 
-1. `scripts/merge_vvm.py`を実行してVVMファイルを結合
+1. `scripts/merge_vvm.py`を実行して VVM ファイルを結合
 2. `scripts/make_docs.py`を実行してドキュメントを更新
 
 ## バージョニング
