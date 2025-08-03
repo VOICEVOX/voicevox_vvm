@@ -52,7 +52,7 @@ def fetch_terms() -> Terms:
 
 
 def get_vvm_files() -> list[Path]:
-    vvms_dir_paths = list(Path("vvms").glob("*.vvm"))
+    vvms_dir_paths = Path("vvms").glob("*.vvm")
     return sorted(
         vvms_dir_paths,
         key=lambda p: tuple(
@@ -87,34 +87,32 @@ def generate_vvm_text(vvm_files: list[Path]):
 
     output_text = "# 音声モデル(.vvm)ファイルと声（キャラクター・スタイル名）とスタイル ID の対応表\n\n"
 
-    # トーク用テーブル
-    output_text += "## トーク\n\n"
-    output_text += "| VVMファイル名 | 話者名 | スタイル名 | スタイルID |\n"
-    output_text += "|---|---|---|---|\n"
-    for vvm_file_name, speaker_name, style_name, style_id in talk_entries:
-        output_text += (
-            f"| {vvm_file_name} | {speaker_name} | {style_name} | {style_id} |\n"
-        )
-
-    # ソング用テーブル
-    output_text += "\n## ソング\n\n"
-    output_text += "| VVMファイル名 | 話者名 | スタイル名 | スタイルID |\n"
-    output_text += "|---|---|---|---|\n"
-    for vvm_file_name, speaker_name, style_name, style_id in song_entries:
-        output_text += (
-            f"| {vvm_file_name} | {speaker_name} | {style_name} | {style_id} |\n"
-        )
+    output_text += generate_table("トーク", talk_entries)
+    output_text += "\n"
+    output_text += generate_table("ソング", song_entries)
 
     return output_text
 
 
 def get_style_type(style: dict) -> str:
     """スタイルがソングかトークかを判定"""
-    style_type = style.get("type", "")
+    style_type = style.get("type", None)
     if style_type in ["frame_decode", "singing_teacher"]:
         return "ソング"
     else:
         return "トーク"
+
+
+def generate_table(section_name: str, entries: list[tuple[str, str, str, int]]) -> str:
+    """指定されたエントリからMarkdownテーブルを生成"""
+    table_text = f"## {section_name}\n\n"
+    table_text += "| VVMファイル名 | 話者名 | スタイル名 | スタイルID |\n"
+    table_text += "|---|---|---|---|\n"
+    for vvm_file_name, speaker_name, style_name, style_id in entries:
+        table_text += (
+            f"| {vvm_file_name} | {speaker_name} | {style_name} | {style_id} |\n"
+        )
+    return table_text
 
 
 def update_readme(readme_path: Path, terms: Terms, vvm_text: str):
