@@ -9,6 +9,7 @@ import re
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Literal
 from urllib import request
 
 
@@ -16,6 +17,14 @@ from urllib import request
 class Terms:
     markdown: str
     text: str
+
+
+@dataclass
+class StyleEntry:
+    vvm_file_name: str
+    speaker_name: str
+    style_name: str
+    style_id: int
 
 
 def main():
@@ -65,8 +74,8 @@ def get_vvm_files() -> list[Path]:
 def generate_vvm_text(vvm_files: list[Path]):
     """vvmファイル内のmetas.jsonを読み込み、トークとソング用の分離されたテーブルを生成"""
 
-    talk_entries = []
-    song_entries = []
+    talk_entries: list[StyleEntry] = []
+    song_entries: list[StyleEntry] = []
 
     for vvm_file in vvm_files:
         with zipfile.ZipFile(vvm_file, "r") as zipf:
@@ -79,8 +88,13 @@ def generate_vvm_text(vvm_files: list[Path]):
                         style_id = style["id"]
                         style_type = get_style_type(style)
 
-                        entry_data = (vvm_file.name, speaker_name, style_name, style_id)
-                        if style_type == "トーク":
+                        entry_data = StyleEntry(
+                            vvm_file_name=vvm_file.name,
+                            speaker_name=speaker_name,
+                            style_name=style_name,
+                            style_id=style_id,
+                        )
+                        if style_type == "talk":
                             talk_entries.append(entry_data)
                         else:
                             song_entries.append(entry_data)
@@ -94,24 +108,22 @@ def generate_vvm_text(vvm_files: list[Path]):
     return output_text
 
 
-def get_style_type(style: dict) -> str:
+def get_style_type(style: dict) -> Literal["talk", "song"]:
     """スタイルがソングかトークかを判定"""
     style_type = style.get("type", None)
     if style_type in ["frame_decode", "singing_teacher"]:
-        return "ソング"
+        return "song"
     else:
-        return "トーク"
+        return "talk"
 
 
-def generate_table(section_name: str, entries: list[tuple[str, str, str, int]]) -> str:
+def generate_table(section_name: str, entries: list[StyleEntry]) -> str:
     """指定されたエントリからMarkdownテーブルを生成"""
     table_text = f"## {section_name}\n\n"
     table_text += "| VVMファイル名 | 話者名 | スタイル名 | スタイルID |\n"
     table_text += "|---|---|---|---|\n"
-    for vvm_file_name, speaker_name, style_name, style_id in entries:
-        table_text += (
-            f"| {vvm_file_name} | {speaker_name} | {style_name} | {style_id} |\n"
-        )
+    for entry in entries:
+        table_text += f"| {entry.vvm_file_name} | {entry.speaker_name} | {entry.style_name} | {entry.style_id} |\n"
     return table_text
 
 
