@@ -33,6 +33,7 @@ jobs:
           mkdir -p release
           cp vvms/*.vvm release/
           cp TERMS.txt release/
+          cp README.md release/README.txt
 
       - name: Create release
         uses: softprops/action-gh-release@v2
