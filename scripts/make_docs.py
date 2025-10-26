@@ -111,7 +111,7 @@ def generate_vvm_text(vvm_files: list[Path]):
 def get_style_type(style: dict) -> Literal["talk", "song"]:
     """スタイルがソングかトークかを判定"""
     style_type = style.get("type", None)
-    if style_type in ["frame_decode", "singing_teacher"]:
+    if style_type in ["frame_decode", "singing_teacher", "sing"]:
         return "song"
     else:
         return "talk"
