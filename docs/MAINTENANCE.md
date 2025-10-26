@@ -24,4 +24,5 @@
 ## VVM 内の情報
 
 - Github Releases のメジャーバージョンと VVM 内の metas.json 内のキャラクターごとのバージョンのメジャーバージョンは合わせる
+- VVM を追加・更新時のキャラクターごとのバージョンは Github Releases の次のバージョンと合わせる（暫定）
 - VVM の UUID（manifest.json の id）は新しい音声が追加された場合など実質的な変更時に更新し、軽微な修正では変更しない
