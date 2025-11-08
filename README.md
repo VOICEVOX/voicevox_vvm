@@ -315,6 +315,8 @@ https://zunko.jp/con_ongen_kiyaku.html
 
 <!-- terms end -->
 
+<!-- TODO: VOICEVOX Nemo の利用規約を追加する。https://voicevox.hiroshiba.jp/nemo/ を参照 -->
+
 ---
 
 <!-- vvm-table start -->
@@ -525,5 +527,19 @@ https://zunko.jp/con_ongen_kiyaku.html
 | s0.vvm | 満別花丸 | ぶりっ子 | 3072 |
 | s0.vvm | 満別花丸 | ボーイ | 3073 |
 | s0.vvm | 琴詠ニア | ノーマル | 3074 |
+
+## Nemo トーク
+
+| VVMファイル名 | 話者名 | スタイル名 | スタイルID |
+|---|---|---|---|
+| n0.vvm | 女声1 | ノーマル | 10005 |
+| n0.vvm | 女声2 | ノーマル | 10007 |
+| n0.vvm | 女声3 | ノーマル | 10004 |
+| n0.vvm | 女声4 | ノーマル | 10003 |
+| n0.vvm | 女声5 | ノーマル | 10008 |
+| n0.vvm | 女声6 | ノーマル | 10006 |
+| n0.vvm | 男声1 | ノーマル | 10001 |
+| n0.vvm | 男声2 | ノーマル | 10000 |
+| n0.vvm | 男声3 | ノーマル | 10002 |
 
 <!-- vvm-table end -->

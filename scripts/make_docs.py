@@ -27,6 +27,9 @@ class StyleEntry:
     style_id: int
 
 
+VvmCategory = Literal["talk", "song", "nemo_talk"]
+
+
 def main():
     terms = fetch_terms()
 
@@ -72,10 +75,11 @@ def get_vvm_files() -> list[Path]:
 
 
 def generate_vvm_text(vvm_files: list[Path]):
-    """vvmファイル内のmetas.jsonを読み込み、トークとソング用の分離されたテーブルを生成"""
+    """vvmファイル内のmetas.jsonを読み込み、トーク・ソング・Nemoトーク用の分離されたテーブルを生成"""
 
     talk_entries: list[StyleEntry] = []
     song_entries: list[StyleEntry] = []
+    nemo_talk_entries: list[StyleEntry] = []
 
     for vvm_file in vvm_files:
         with zipfile.ZipFile(vvm_file, "r") as zipf:
@@ -86,7 +90,7 @@ def generate_vvm_text(vvm_files: list[Path]):
                     for style in entry["styles"]:
                         style_name = style["name"]
                         style_id = style["id"]
-                        style_type = get_style_type(style)
+                        vvm_category = get_vvm_category(vvm_file, style)
 
                         entry_data = StyleEntry(
                             vvm_file_name=vvm_file.name,
@@ -94,27 +98,37 @@ def generate_vvm_text(vvm_files: list[Path]):
                             style_name=style_name,
                             style_id=style_id,
                         )
-                        if style_type == "talk":
+                        if vvm_category == "talk":
                             talk_entries.append(entry_data)
-                        else:
+                        elif vvm_category == "song":
                             song_entries.append(entry_data)
+                        else:
+                            nemo_talk_entries.append(entry_data)
 
     output_text = "# 音声モデル(.vvm)ファイルと声（キャラクター・スタイル名）とスタイル ID の対応表\n\n"
 
     output_text += generate_table("トーク", talk_entries)
     output_text += "\n"
     output_text += generate_table("ソング", song_entries)
+    output_text += "\n"
+    output_text += generate_table("Nemo トーク", nemo_talk_entries)
 
     return output_text
 
 
-def get_style_type(style: dict) -> Literal["talk", "song"]:
-    """スタイルがソングかトークかを判定"""
+def get_vvm_category(vvm_file: Path, style: dict) -> VvmCategory:
+    """VVMのカテゴリを判定"""
     style_type = style.get("type", None)
-    if style_type in ["frame_decode", "singing_teacher", "sing"]:
+    is_song = style_type in ["frame_decode", "singing_teacher", "sing"]
+    is_nemo = vvm_file.stem.startswith("n")
+
+    if is_song:
         return "song"
     else:
-        return "talk"
+        if is_nemo:
+            return "nemo_talk"
+        else:
+            return "talk"
 
 
 def generate_table(section_name: str, entries: list[StyleEntry]) -> str:
