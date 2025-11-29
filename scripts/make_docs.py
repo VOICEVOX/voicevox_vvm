@@ -9,7 +9,7 @@ import re
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal
+from typing import Literal, assert_never
 from urllib import request
 
 
@@ -151,12 +151,15 @@ def generate_vvm_text(vvm_files: list[Path]):
                             style_name=style_name,
                             style_id=style_id,
                         )
-                        if vvm_category == "talk":
-                            talk_entries.append(entry_data)
-                        elif vvm_category == "song":
-                            song_entries.append(entry_data)
-                        else:
-                            nemo_talk_entries.append(entry_data)
+                        match vvm_category:
+                            case "talk":
+                                talk_entries.append(entry_data)
+                            case "song":
+                                song_entries.append(entry_data)
+                            case "nemo_talk":
+                                nemo_talk_entries.append(entry_data)
+                            case _:
+                                assert_never(vvm_category)
 
     output_text = "# 音声モデル(.vvm)ファイルと声（キャラクター・スタイル名）とスタイル ID の対応表\n\n"
 
