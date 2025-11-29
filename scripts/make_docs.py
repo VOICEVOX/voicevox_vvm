@@ -111,7 +111,7 @@ def extract_nemo_section(content: str) -> str:
     else:
         raise ValueError("VOICEVOX Nemoのセクションが見つかりません。")
 
-    nemo_section = "\n".join(lines[nemo_start_index:]).strip()
+    nemo_section = "\n".join(lines[nemo_start_index:]).strip() + "\n"
 
     return nemo_section
 
@@ -173,7 +173,7 @@ def get_vvm_category(vvm_file: Path, style: dict) -> VvmCategory:
     """VVMのカテゴリを判定"""
     style_type = style.get("type", None)
     is_song = style_type in ["frame_decode", "singing_teacher", "sing"]
-    is_nemo = vvm_file.stem.startswith("n")
+    is_nemo = re.match(r"^n\d+\.vvm$", vvm_file.name) is not None
 
     if is_song:
         return "song"
