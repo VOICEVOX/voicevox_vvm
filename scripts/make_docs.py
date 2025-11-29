@@ -31,7 +31,7 @@ VvmCategory = Literal["talk", "song", "nemo_talk"]
 
 
 def main():
-    terms = fetch_terms()
+    terms = fetch_and_generate_terms()
 
     vvm_files = get_vvm_files()
     assert len(vvm_files) > 0, "VVMが見つかりませんでした。"
@@ -46,7 +46,18 @@ def main():
     print(f"{terms_path} has been updated!")
 
 
-def fetch_terms() -> Terms:
+def fetch_and_generate_terms() -> Terms:
+    """VOICEVOXとVOICEVOX Nemoの利用規約を取得し、利用規約を生成"""
+    voicevox_terms = fetch_voicevox_terms()
+    nemo_terms = fetch_and_extract_nemo_terms()
+
+    combined_markdown = voicevox_terms.markdown.rstrip() + "\n\n" + nemo_terms.markdown
+    combined_text = voicevox_terms.text.rstrip() + "\n\n" + nemo_terms.text
+
+    return Terms(markdown=combined_markdown, text=combined_text)
+
+
+def fetch_voicevox_terms() -> Terms:
     """VOICEVOXのリポジトリから利用規約を取得"""
     base_url = (
         "https://raw.githubusercontent.com/VOICEVOX/voicevox_resource/refs/heads/main/"
@@ -61,6 +72,48 @@ def fetch_terms() -> Terms:
         text = response.read().decode("utf-8")
 
     return Terms(markdown=markdown, text=text)
+
+
+def fetch_and_extract_nemo_terms() -> Terms:
+    """VOICEVOX Nemoの音声ライブラリ利用規約部分を抽出"""
+    base_url = (
+        "https://raw.githubusercontent.com/VOICEVOX/voicevox_nemo_resource/"
+        "refs/heads/main/"
+    )
+
+    markdown_url = base_url + "voicevox_nemo/vvm/README.md"
+    with request.urlopen(markdown_url) as response:
+        full_markdown = response.read().decode("utf-8")
+
+    text_url = base_url + "voicevox_nemo/vvm/README.txt"
+    with request.urlopen(text_url) as response:
+        full_text = response.read().decode("utf-8")
+
+    markdown = extract_nemo_section(full_markdown)
+    text = extract_nemo_section(full_text)
+
+    return Terms(markdown=markdown, text=text)
+
+
+def extract_nemo_section(content: str) -> str:
+    """VOICEVOX Nemo音声ライブラリ利用規約のセクションを抽出"""
+    parts = content.split("---")
+    if len(parts) != 2:
+        raise ValueError("利用規約のフォーマットが想定と異なります。")
+
+    voice_library_section = parts[1].strip()
+
+    lines = voice_library_section.splitlines()
+    for i, line in enumerate(lines):
+        if line.strip().startswith("## VOICEVOX Nemo"):
+            nemo_start_index = i
+            break
+    else:
+        raise ValueError("VOICEVOX Nemoのセクションが見つかりません。")
+
+    nemo_section = "\n".join(lines[nemo_start_index:]).strip()
+
+    return nemo_section
 
 
 def get_vvm_files() -> list[Path]:
