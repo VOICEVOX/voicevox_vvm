@@ -313,6 +313,13 @@ https://zunko.jp/con_ongen_kiyaku.html
 利用規約の詳細は以下をご確認ください。  
 https://zunko.jp/con_ongen_kiyaku.html
 
+## VOICEVOX Nemo
+
+VOICEVOX Nemo の音声ライブラリを用いて生成した音声は、「VOICEVOX Nemo」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://voicevox.hiroshiba.jp/nemo/term/
+
 <!-- terms end -->
 
 ---
@@ -525,5 +532,19 @@ https://zunko.jp/con_ongen_kiyaku.html
 | s0.vvm | 満別花丸 | ぶりっ子 | 3072 |
 | s0.vvm | 満別花丸 | ボーイ | 3073 |
 | s0.vvm | 琴詠ニア | ノーマル | 3074 |
+
+## Nemo トーク
+
+| VVMファイル名 | 話者名 | スタイル名 | スタイルID |
+|---|---|---|---|
+| n0.vvm | 女声1 | ノーマル | 10005 |
+| n0.vvm | 女声2 | ノーマル | 10007 |
+| n0.vvm | 女声3 | ノーマル | 10004 |
+| n0.vvm | 女声4 | ノーマル | 10003 |
+| n0.vvm | 女声5 | ノーマル | 10008 |
+| n0.vvm | 女声6 | ノーマル | 10006 |
+| n0.vvm | 男声1 | ノーマル | 10001 |
+| n0.vvm | 男声2 | ノーマル | 10000 |
+| n0.vvm | 男声3 | ノーマル | 10002 |
 
 <!-- vvm-table end -->

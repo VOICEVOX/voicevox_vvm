@@ -9,7 +9,7 @@ import re
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal
+from typing import Literal, assert_never
 from urllib import request
 
 
@@ -27,8 +27,11 @@ class StyleEntry:
     style_id: int
 
 
+VvmCategory = Literal["talk", "song", "nemo_talk"]
+
+
 def main():
-    terms = fetch_terms()
+    terms = fetch_and_generate_terms()
 
     vvm_files = get_vvm_files()
     assert len(vvm_files) > 0, "VVMが見つかりませんでした。"
@@ -43,7 +46,18 @@ def main():
     print(f"{terms_path} has been updated!")
 
 
-def fetch_terms() -> Terms:
+def fetch_and_generate_terms() -> Terms:
+    """VOICEVOXとVOICEVOX Nemoの利用規約を取得し、利用規約を生成"""
+    voicevox_terms = fetch_voicevox_terms()
+    nemo_terms = fetch_and_extract_nemo_terms()
+
+    combined_markdown = voicevox_terms.markdown.rstrip() + "\n\n" + nemo_terms.markdown
+    combined_text = voicevox_terms.text.rstrip() + "\n\n" + nemo_terms.text
+
+    return Terms(markdown=combined_markdown, text=combined_text)
+
+
+def fetch_voicevox_terms() -> Terms:
     """VOICEVOXのリポジトリから利用規約を取得"""
     base_url = (
         "https://raw.githubusercontent.com/VOICEVOX/voicevox_resource/refs/heads/main/"
@@ -60,6 +74,48 @@ def fetch_terms() -> Terms:
     return Terms(markdown=markdown, text=text)
 
 
+def fetch_and_extract_nemo_terms() -> Terms:
+    """VOICEVOX Nemoの音声ライブラリ利用規約部分を抽出"""
+    base_url = (
+        "https://raw.githubusercontent.com/VOICEVOX/voicevox_nemo_resource/"
+        "refs/heads/main/"
+    )
+
+    markdown_url = base_url + "voicevox_nemo/vvm/README.md"
+    with request.urlopen(markdown_url) as response:
+        full_markdown = response.read().decode("utf-8")
+
+    text_url = base_url + "voicevox_nemo/vvm/README.txt"
+    with request.urlopen(text_url) as response:
+        full_text = response.read().decode("utf-8")
+
+    markdown = extract_nemo_section(full_markdown)
+    text = extract_nemo_section(full_text)
+
+    return Terms(markdown=markdown, text=text)
+
+
+def extract_nemo_section(content: str) -> str:
+    """VOICEVOX Nemo音声ライブラリ利用規約のセクションを抽出"""
+    parts = content.split("---")
+    if len(parts) != 2:
+        raise ValueError("利用規約のフォーマットが想定と異なります。")
+
+    voice_library_section = parts[1].strip()
+
+    lines = voice_library_section.splitlines()
+    for i, line in enumerate(lines):
+        if line.strip().startswith("## VOICEVOX Nemo"):
+            nemo_start_index = i
+            break
+    else:
+        raise ValueError("VOICEVOX Nemoのセクションが見つかりません。")
+
+    nemo_section = "\n".join(lines[nemo_start_index:]).strip() + "\n"
+
+    return nemo_section
+
+
 def get_vvm_files() -> list[Path]:
     vvms_dir_paths = Path("vvms").glob("*.vvm")
     return sorted(
@@ -72,10 +128,11 @@ def get_vvm_files() -> list[Path]:
 
 
 def generate_vvm_text(vvm_files: list[Path]):
-    """vvmファイル内のmetas.jsonを読み込み、トークとソング用の分離されたテーブルを生成"""
+    """vvmファイル内のmetas.jsonを読み込み、トーク・ソング・Nemoトーク用の分離されたテーブルを生成"""
 
     talk_entries: list[StyleEntry] = []
     song_entries: list[StyleEntry] = []
+    nemo_talk_entries: list[StyleEntry] = []
 
     for vvm_file in vvm_files:
         with zipfile.ZipFile(vvm_file, "r") as zipf:
@@ -86,7 +143,7 @@ def generate_vvm_text(vvm_files: list[Path]):
                     for style in entry["styles"]:
                         style_name = style["name"]
                         style_id = style["id"]
-                        style_type = get_style_type(style)
+                        vvm_category = get_vvm_category(vvm_file, style)
 
                         entry_data = StyleEntry(
                             vvm_file_name=vvm_file.name,
@@ -94,27 +151,40 @@ def generate_vvm_text(vvm_files: list[Path]):
                             style_name=style_name,
                             style_id=style_id,
                         )
-                        if style_type == "talk":
-                            talk_entries.append(entry_data)
-                        else:
-                            song_entries.append(entry_data)
+                        match vvm_category:
+                            case "talk":
+                                talk_entries.append(entry_data)
+                            case "song":
+                                song_entries.append(entry_data)
+                            case "nemo_talk":
+                                nemo_talk_entries.append(entry_data)
+                            case _:
+                                assert_never(vvm_category)
 
     output_text = "# 音声モデル(.vvm)ファイルと声（キャラクター・スタイル名）とスタイル ID の対応表\n\n"
 
     output_text += generate_table("トーク", talk_entries)
     output_text += "\n"
     output_text += generate_table("ソング", song_entries)
+    output_text += "\n"
+    output_text += generate_table("Nemo トーク", nemo_talk_entries)
 
     return output_text
 
 
-def get_style_type(style: dict) -> Literal["talk", "song"]:
-    """スタイルがソングかトークかを判定"""
+def get_vvm_category(vvm_file: Path, style: dict) -> VvmCategory:
+    """VVMのカテゴリを判定"""
     style_type = style.get("type", None)
-    if style_type in ["frame_decode", "singing_teacher", "sing"]:
+    is_song = style_type in ["frame_decode", "singing_teacher", "sing"]
+    is_nemo = re.match(r"^n\d+\.vvm$", vvm_file.name) is not None
+
+    if is_song:
         return "song"
     else:
-        return "talk"
+        if is_nemo:
+            return "nemo_talk"
+        else:
+            return "talk"
 
 
 def generate_table(section_name: str, entries: list[StyleEntry]) -> str:
