@@ -168,6 +168,8 @@ def generate_vvm_text(vvm_files: list[Path]):
     output_text += generate_table("ソング", song_entries)
     output_text += "\n"
     output_text += generate_table("Nemo トーク", nemo_talk_entries)
+    output_text += "\n"
+    output_text += generate_notes()
 
     return output_text
 
@@ -195,6 +197,16 @@ def generate_table(section_name: str, entries: list[StyleEntry]) -> str:
     for entry in entries:
         table_text += f"| {entry.vvm_file_name} | {entry.speaker_name} | {entry.style_name} | {entry.style_id} |\n"
     return table_text
+
+
+def generate_notes() -> str:
+    """備考セクションを生成"""
+    notes_text = "## 備考\n\n"
+    notes_text += "VVM ファイル名の頭文字で種類を分けています。\n\n"
+    notes_text += "- 頭文字なし（数字から始まる）：トーク用\n"
+    notes_text += "- `s` から始まる：ソング用\n"
+    notes_text += "- `n` から始まる：Nemo 用\n"
+    return notes_text
 
 
 def update_readme(readme_path: Path, terms: Terms, vvm_text: str):
