@@ -11,8 +11,9 @@
 
 ## ドキュメント更新方法
 
-1. `scripts/merge_vvm.py`を実行して VVM ファイルを結合
-2. `scripts/make_docs.py`を実行してドキュメントを更新
+1. 必要であれば`env.json`でバージョン情報を更新
+2. `scripts/merge_vvm.py`を実行して VVM ファイルを結合
+3. `scripts/make_docs.py`を実行してドキュメントを更新
 
 ## バージョニング
 
