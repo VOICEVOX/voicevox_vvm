@@ -80,7 +80,7 @@ def parse_args() -> Args:
 
 
 def load_env() -> dict[str, str]:
-    """env.jsonから環境変数を読み込む"""
+    """env.jsonから設定値を読み込み"""
     ENV_JSON_PATH = Path(__file__).parent.parent / "env.json"
     with open(ENV_JSON_PATH, encoding="utf-8") as f:
         return json.load(f)
