@@ -4,6 +4,7 @@ VVM関連の利用規約と、VVM内に含まれる声（キャラクター＋�
 このスクリプトを実行する前に、必ず scripts/merge_vvm.py を実行してVVMファイルを結合してください。
 """
 
+import argparse
 import json
 import re
 import zipfile
@@ -11,6 +12,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal, assert_never
 from urllib import request
+
+
+@dataclass
+class Args:
+    voicevox_resource_ref: str
+    voicevox_nemo_resource_ref: str
 
 
 @dataclass
@@ -31,7 +38,9 @@ VvmCategory = Literal["talk", "song", "nemo_talk"]
 
 
 def main():
-    terms = fetch_and_generate_terms()
+    refs = parse_args()
+
+    terms = fetch_and_generate_terms(refs)
 
     vvm_files = get_vvm_files()
     assert len(vvm_files) > 0, "VVMが見つかりませんでした。"
@@ -46,10 +55,41 @@ def main():
     print(f"{terms_path} has been updated!")
 
 
-def fetch_and_generate_terms() -> Terms:
+def parse_args() -> Args:
+    """コマンドライン引数をパース"""
+    env = load_env()
+
+    parser = argparse.ArgumentParser(
+        description="VVM関連の利用規約とドキュメントを更新する"
+    )
+    parser.add_argument(
+        "--voicevox-resource-ref",
+        default=env["VOICEVOX_RESOURCE_VERSION"],
+        help=f"voicevox_resourceのタグ名またはブランチ名（デフォルト: {env['VOICEVOX_RESOURCE_VERSION']}）",
+    )
+    parser.add_argument(
+        "--voicevox-nemo-resource-ref",
+        default=env["VOICEVOX_NEMO_RESOURCE_VERSION"],
+        help=f"voicevox_nemo_resourceのタグ名またはブランチ名（デフォルト: {env['VOICEVOX_NEMO_RESOURCE_VERSION']}）",
+    )
+    args = parser.parse_args()
+    return Args(
+        voicevox_resource_ref=args.voicevox_resource_ref,
+        voicevox_nemo_resource_ref=args.voicevox_nemo_resource_ref,
+    )
+
+
+def load_env() -> dict[str, str]:
+    """env.jsonから設定値を読み込み"""
+    ENV_JSON_PATH = Path(__file__).parent.parent / "env.json"
+    with open(ENV_JSON_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def fetch_and_generate_terms(refs: Args) -> Terms:
     """VOICEVOXとVOICEVOX Nemoの利用規約を取得し、利用規約を生成"""
-    voicevox_terms = fetch_voicevox_terms()
-    nemo_terms = fetch_and_extract_nemo_terms()
+    voicevox_terms = fetch_voicevox_terms(refs.voicevox_resource_ref)
+    nemo_terms = fetch_and_extract_nemo_terms(refs.voicevox_nemo_resource_ref)
 
     combined_markdown = voicevox_terms.markdown.rstrip() + "\n\n" + nemo_terms.markdown
     combined_text = voicevox_terms.text.rstrip() + "\n\n" + nemo_terms.text
@@ -57,11 +97,9 @@ def fetch_and_generate_terms() -> Terms:
     return Terms(markdown=combined_markdown, text=combined_text)
 
 
-def fetch_voicevox_terms() -> Terms:
+def fetch_voicevox_terms(ref: str) -> Terms:
     """VOICEVOXのリポジトリから利用規約を取得"""
-    base_url = (
-        "https://raw.githubusercontent.com/VOICEVOX/voicevox_resource/refs/heads/main/"
-    )
+    base_url = f"https://raw.githubusercontent.com/VOICEVOX/voicevox_resource/{ref}/"
 
     markdown_url = base_url + "vvm/README.md"
     with request.urlopen(markdown_url) as response:
@@ -74,11 +112,10 @@ def fetch_voicevox_terms() -> Terms:
     return Terms(markdown=markdown, text=text)
 
 
-def fetch_and_extract_nemo_terms() -> Terms:
+def fetch_and_extract_nemo_terms(ref: str) -> Terms:
     """VOICEVOX Nemoの音声ライブラリ利用規約部分を抽出"""
     base_url = (
-        "https://raw.githubusercontent.com/VOICEVOX/voicevox_nemo_resource/"
-        "refs/heads/main/"
+        f"https://raw.githubusercontent.com/VOICEVOX/voicevox_nemo_resource/{ref}/"
     )
 
     markdown_url = base_url + "voicevox_nemo/vvm/README.md"
