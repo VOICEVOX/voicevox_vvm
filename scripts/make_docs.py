@@ -17,7 +17,6 @@ from urllib import request
 @dataclass
 class Args:
     voicevox_resource_ref: str
-    voicevox_nemo_resource_ref: str
 
 
 @dataclass
@@ -67,15 +66,9 @@ def parse_args() -> Args:
         default=env["VOICEVOX_RESOURCE_VERSION"],
         help=f"voicevox_resourceのタグ名またはブランチ名（デフォルト: {env['VOICEVOX_RESOURCE_VERSION']}）",
     )
-    parser.add_argument(
-        "--voicevox-nemo-resource-ref",
-        default=env["VOICEVOX_NEMO_RESOURCE_VERSION"],
-        help=f"voicevox_nemo_resourceのタグ名またはブランチ名（デフォルト: {env['VOICEVOX_NEMO_RESOURCE_VERSION']}）",
-    )
     args = parser.parse_args()
     return Args(
         voicevox_resource_ref=args.voicevox_resource_ref,
-        voicevox_nemo_resource_ref=args.voicevox_nemo_resource_ref,
     )
 
 
@@ -89,7 +82,7 @@ def load_env() -> dict[str, str]:
 def fetch_and_generate_terms(refs: Args) -> Terms:
     """VOICEVOXとVOICEVOX Nemoの利用規約を取得し、利用規約を生成"""
     voicevox_terms = fetch_voicevox_terms(refs.voicevox_resource_ref)
-    nemo_terms = fetch_and_extract_nemo_terms(refs.voicevox_nemo_resource_ref)
+    nemo_terms = fetch_and_extract_nemo_terms(refs.voicevox_resource_ref)
 
     combined_markdown = voicevox_terms.markdown.rstrip() + "\n\n" + nemo_terms.markdown
     combined_text = voicevox_terms.text.rstrip() + "\n\n" + nemo_terms.text
@@ -114,9 +107,7 @@ def fetch_voicevox_terms(ref: str) -> Terms:
 
 def fetch_and_extract_nemo_terms(ref: str) -> Terms:
     """VOICEVOX Nemoの音声ライブラリ利用規約部分を抽出"""
-    base_url = (
-        f"https://raw.githubusercontent.com/VOICEVOX/voicevox_nemo_resource/{ref}/"
-    )
+    base_url = f"https://raw.githubusercontent.com/VOICEVOX/voicevox_resource/{ref}/"
 
     markdown_url = base_url + "voicevox_nemo/vvm/README.md"
     with request.urlopen(markdown_url) as response:
