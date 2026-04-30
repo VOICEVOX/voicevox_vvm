@@ -337,6 +337,37 @@ https://zunko.jp/con_ongen_kiyaku.html
 利用規約の詳細は以下をご確認ください。
 https://zunko.jp/con_ongen_kiyaku.html
 
+## あんこもん
+
+あんこもんの音声ライブラリを用いて生成した音声は、「VOICEVOX:あんこもん」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://zunko.jp/con_ongen_kiyaku.html
+
+## 夜語トバリ
+
+夜語トバリの音声ライブラリを用いて生成した音声は、
+「VOICEVOX:夜語トバリ」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://yogataritobari.studio.site/#rules
+
+## 暁記ミタマ
+
+暁記ミタマの音声ライブラリを用いて生成した音声は、
+「VOICEVOX:暁記ミタマ」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://yogataritobari.studio.site/#rules
+
+## 里石ユカ
+
+里石ユカ（つぼみ）の音声ライブラリを用いて生成した音声は、
+「VOICEVOX:里石ユカ（つぼみ）」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://satoishiyuka.wixsite.com/satoishi/kiyaku
+
 ## VOICEVOX Nemo
 
 VOICEVOX Nemo の音声ライブラリを用いて生成した音声は、
