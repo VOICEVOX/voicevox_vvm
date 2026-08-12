@@ -2,25 +2,46 @@ name: Test
 
 on:
   push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  test_make_docs:
+  test_update_docs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c # v4.9.1
         with:
-          python-version: "3.x"
+          python-version: "3.11"
+
+      - name: Run VVM merge script
+        run: |
+          python scripts/merge_vvm.py
 
       - name: Run documentation script
         run: |
           python scripts/make_docs.py
 
+      - name: Run VVM split script
+        run: |
+          python scripts/split_vvm.py
+
       - name: Check for Git differences
         run: |
           git diff --exit-code || exit 1
+
+  pinact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - name: Check pinact
+        uses: suzuki-shunsuke/pinact-action@28aeb220eb3252ad0d4422dd5d9368e925acbd8d # v1.3.0
+        with:
+          skip_push: "true"
+          min_age: "7"

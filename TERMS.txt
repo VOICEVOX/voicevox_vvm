@@ -63,7 +63,7 @@ http://canon-voice.com/kiyaku.html
 「VOICEVOX:玄野武宏」とクレジットを記載すれば、商用・非商用で利用可能です。
 
 利用規約の詳細は以下をご確認ください。
-https://virvoxproject.wixsite.com/official/voicevoxの利用規約
+https://www.virvoxproject.com/voicevoxの利用規約
 
 ## 白上虎太郎
 
@@ -71,7 +71,7 @@ https://virvoxproject.wixsite.com/official/voicevoxの利用規約
 「VOICEVOX:白上虎太郎」とクレジットを記載すれば、商用・非商用で利用可能です。
 
 利用規約の詳細は以下をご確認ください。
-https://virvoxproject.wixsite.com/official/voicevoxの利用規約
+https://www.virvoxproject.com/voicevoxの利用規約
 
 ## 青山龍星
 
@@ -80,7 +80,7 @@ https://virvoxproject.wixsite.com/official/voicevoxの利用規約
 ただし企業が携わる形で利用する場合は、「ななはぴ(https://v.seventhh.com/contact/)」に対し事前確認を取る必要があります。
 
 利用規約の詳細は以下をご確認ください。
-https://virvoxproject.wixsite.com/official/voicevoxの利用規約
+https://www.virvoxproject.com/voicevoxの利用規約
 
 ## 冥鳴ひまり
 
@@ -188,7 +188,7 @@ https://commons.nicovideo.jp/material/nc296132
 「VOICEVOX:雀松朱司」とクレジットを記載すれば、商用・非商用で利用可能です。
 
 利用規約の詳細は以下をご確認ください。
-https://virvoxproject.wixsite.com/official/voicevoxの利用規約
+https://www.virvoxproject.com/voicevoxの利用規約
 
 ## 麒ヶ島宗麟
 
@@ -196,7 +196,7 @@ https://virvoxproject.wixsite.com/official/voicevoxの利用規約
 「VOICEVOX:麒ヶ島宗麟」とクレジットを記載すれば、商用・非商用で利用可能です。
 
 利用規約の詳細は以下をご確認ください。
-https://virvoxproject.wixsite.com/official/voicevoxの利用規約
+https://www.virvoxproject.com/voicevoxの利用規約
 
 ## 春歌ナナ
 
@@ -287,3 +287,91 @@ https://zonko.zone-energy.jp/guideline
 
 利用規約の詳細は以下をご確認ください。
 https://zunko.jp/con_ongen_kiyaku.html
+
+## 離途
+
+離途の音声ライブラリを用いて生成した音声は、
+「VOICEVOX:離途」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://litmus9.com/#/voicebank#rules
+
+## 黒沢冴白
+
+黒沢冴白の音声ライブラリを用いて生成した音声は、
+「VOICEVOX:黒沢冴白」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://www.virvoxproject.com/voicevoxの利用規約
+
+## ユーレイちゃん
+
+個人がユーレイちゃんの音声ライブラリを用いて生成した音声は、
+「VOICEVOX:ユーレイちゃん(CV:神崎零)」とクレジットを記載すれば、非商用（同人利用や配信による収入は OK）で利用可能です。
+その他商用利用の場合は、「ユーステラ(https://u-stella.co.jp/)」に対し事前確認を取る必要があります。
+
+利用規約の詳細は以下をご確認ください。
+https://u-stella.co.jp/voicevox-ure-chan-tucumo-terms-of-use/
+
+## 東北ずん子
+
+東北ずん子の音声ライブラリを用いて生成した音声は、
+「VOICEVOX:東北ずん子」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://zunko.jp/con_ongen_kiyaku.html
+
+## 東北きりたん
+
+東北きりたんの音声ライブラリを用いて生成した音声は、
+「VOICEVOX:東北きりたん」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://zunko.jp/con_ongen_kiyaku.html
+
+## 東北イタコ
+
+東北イタコの音声ライブラリを用いて生成した音声は、
+「VOICEVOX:東北イタコ」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://zunko.jp/con_ongen_kiyaku.html
+
+## あんこもん
+
+あんこもんの音声ライブラリを用いて生成した音声は、「VOICEVOX:あんこもん」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://zunko.jp/con_ongen_kiyaku.html
+
+## 夜語トバリ
+
+夜語トバリの音声ライブラリを用いて生成した音声は、
+「VOICEVOX:夜語トバリ」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://yogataritobari.studio.site/#rules
+
+## 暁記ミタマ
+
+暁記ミタマの音声ライブラリを用いて生成した音声は、
+「VOICEVOX:暁記ミタマ」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://yogataritobari.studio.site/#rules
+
+## 里石ユカ
+
+里石ユカ（つぼみ）の音声ライブラリを用いて生成した音声は、
+「VOICEVOX:里石ユカ（つぼみ）」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://satoishiyuka.wixsite.com/satoishi/kiyaku
+
+## VOICEVOX Nemo
+
+VOICEVOX Nemo の音声ライブラリを用いて生成した音声は、
+「VOICEVOX Nemo」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。
+https://voicevox.hiroshiba.jp/nemo/term/
