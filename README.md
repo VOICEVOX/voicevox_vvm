@@ -341,6 +341,13 @@ https://yogataritobari.studio.site/#rules
 利用規約の詳細は以下をご確認ください。  
 https://satoishiyuka.wixsite.com/satoishi/kiyaku
 
+## ブイブイ・コバコ
+
+ブイブイ・コバコの音声ライブラリを用いて生成した音声は、「VOICEVOX:ブイブイ・コバコ」とクレジットを記載すれば、商用・非商用で利用可能です。
+
+利用規約の詳細は以下をご確認ください。  
+https://vv-cobaco.com/terms
+
 ## VOICEVOX Nemo
 
 VOICEVOX Nemo の音声ライブラリを用いて生成した音声は、「VOICEVOX Nemo」とクレジットを記載すれば、商用・非商用で利用可能です。
@@ -487,6 +494,7 @@ https://voicevox.hiroshiba.jp/nemo/term/
 | 24.vvm | 暁記ミタマ | 哀しみ | 124 |
 | 24.vvm | 暁記ミタマ | ささやき | 125 |
 | 24.vvm | 里石ユカ | つぼみ | 126 |
+| 25.vvm | ブイブイ・コバコ | ノーマル | 127 |
 
 ## ソング
 
